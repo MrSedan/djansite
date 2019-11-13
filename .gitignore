@@ -1,3 +1,4 @@
 newsite/db.sqlite3
 venv/
 /.vscode
+newsite/newsite/__pycache__
