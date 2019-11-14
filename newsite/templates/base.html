@@ -1,11 +1,51 @@
 <html>
-    <head>
-        <title>     
-        Test
-        </title>
-    </head>
-    <body>
-    {% block content %}
-    {% endblock %}
-    </body>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'profile:index' %}">Мой Сайт</a>
+
+        <div class="navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Профиль</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Статьи</a>
+                </li>
+                <li>
+                    {% if request.user.is_anonymous %}
+                        <a class="nav-link" href="{% url 'profile:login' %}">Войти</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'profile:logout' %}">Выйти</a>
+                    {% endif %}
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="search" placeholder="Запрос" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+            </form>
+        </div>
+        <table>
+            <td>
+            </td>
+        </table>
+    </nav>
+    {% block content %}{% endblock %}
+    <hr>
+    <br>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
 </html>

@@ -1,4 +1,5 @@
 newsite/db.sqlite3
 venv/
 /.vscode
-newsite/newsite/__pycache__
+__pycache__/
+*.py[cod]
