@@ -13,3 +13,4 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(label='Email', max_length=48, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     password = forms.CharField(label='Password', max_length=48, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}))
     re_password = forms.CharField(label='Repeat password', max_length=48, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}))
+    

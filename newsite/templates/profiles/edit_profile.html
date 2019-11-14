@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+Изменить профиль
+{% endblock %}
+
+{% block content %}
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px">
+    <h4 class="card-title text-center mt-3">Изменить информацию о профиле</h4>
+        <form method="post" action="">
+            {% csrf_token %}
+        <p>Ссылка на ваш профиль после /:</p>
+        <div class="form-group input-group">
+            <input type="text" class="form-control"  value="{{ info.url }}" name="url">
+        </div>
+        <p>О себе:</p>
+        <div class="form-group input-group">
+            <textarea class="form-control" name="about">{% if info.about %}{{ info.about }}{% endif %}</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Подтвердить редактирование</button>
+        </div>
+</div>
+{% endblock %}
