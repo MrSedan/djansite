@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}
+Регистрация
+{% endblock %}
+{% block content %}
+    {% if request.user.is_anonymous %}
+    <div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 text-center">Регистрация</h4>
+        <form method="post" action="">
+        {% csrf_token %}
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+             </div>
+            {{ form.first_name }}
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+             </div>
+            {{ form.second_name }}
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+             </div>
+            {{ form.login }}
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+             </div>
+            {{ form.email }}
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            {{ form.password }}
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            {{ form.re_password }}
+        </div> <!-- form-group// -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Создать аккаунт  </button>
+        </div> <!-- form-group// -->
+        <p class="text-center">Уже есть аккаунт? <a href="{% url 'profile:login' %}">Войти</a> </p>
+    </form>
+    </article>
+    </div> <!-- card.// -->
+    {% else %}
+    <h1>Вы уже авторизированы! <a href="{% url 'profile:index' %}">Вернуться на главную страницу?</a></h1>
+    {% endif %}
+{% endblock %}

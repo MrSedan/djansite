@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+Вход
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_anonymous %}
+    <div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px">
+    <h4 class="card-title text-center mt-3">Войти</h4>
+        <form method="post" action="">
+            {% csrf_token %}
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+             </div>
+            {{ form.login }}
+        </div>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            {{ form.password }}
+        </div>
+        <div class="form-group">
+            {{ form.remember }} Запомнить пароль?
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Войти  </button>
+        </div>
+    </form>
+    <a href="{% url 'profile:register' %}" class="btn btn-outline-primary btn-block">Зарегистрироваться</a>
+    {% else %}
+    <h1>Вы уже авторизированы! <a href="{% url 'profile:index' %}">Вернуться на главную страницу?</a></h1>
+    {% endif %}
+{% endblock %}
