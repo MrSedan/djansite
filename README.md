@@ -8,6 +8,12 @@ pip install -r requirements.txt
 ```
 
 Для запуска:
-```python
-python manage.py runserver
+```bash
+cd newsite # переход в папку с сайтом
+
+python manage.py makemigrations # назначить миграцию БД
+
+python manage.py migrate # провести миграцию бд
+
+python manage.py runserver # запустить сайт
 ```
