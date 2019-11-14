@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import LoginForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from hashlib import md5
 from django.contrib.auth.models import User
+from .models import Info
 
 def index(request):
     return render(request, 'profiles/index.html')
@@ -69,9 +71,44 @@ def register(request):
                     user.last_name = second_name
                 user.set_password(form.cleaned_data['password'])
                 user.save()
+                info = Info(user=user, url=form.cleaned_data['login'])
+                info.save()
                 messages.success(request, "Вы успешно зарегистрировались!")
                 form = LoginForm()
                 return redirect('profile:login')
     form = RegisterForm()
     return render(request, 'profiles/register.html', {'form': form})
     
+def profile(request, s):
+    try:
+        info = Info.objects.get(url=s)
+        user = info.user
+    except:
+        return render(request, '404.html', {'text': "Этого пользователя не существует!"})
+    digest = md5(user.email.lower().encode('utf-8')).hexdigest()
+    return render(request, 'profiles/profile.html', {'user': user, 'avatar': digest})
+
+def edit_profile(request):
+    if request.method=='POST':
+        url = request.POST['url']
+        about = request.POST['about']
+        try:
+            info = Info.objects.get(user=request.user)
+        except:
+            return render(request, '404.html')
+        urls = Info.objects.filter(url=url)
+        if urls is not None:
+            if urls.first().user!=request.user:
+                messages.error(request, "Такая ссылка уже зарезервирована!")
+                return render(request, 'profiles/edit_profile.html', {'info':info})   
+        info.url = url
+        info.about = about
+        info.save()
+        messages.success(request, "Успешное изменение!")
+        return redirect('profile:profile', url)
+    if request.user.is_authenticated:
+            try:
+                info = Info.objects.get(user=request.user)
+            except:
+                return render(request, '404.html')
+            return render(request, 'profiles/edit_profile.html', {'info':info})   

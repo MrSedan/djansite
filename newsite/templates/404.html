@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+404
+{% endblock %}
+
+{% block content %}
+    <h1 style="text-align:center;">Ошибка 404</h1>
+    {% if text %}<h2>{{ text }}</h2>{% endif %}
+    <p><h2><a href="{% url 'profile:index' %}">Вернуться на главную?</a></h2></p>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+Профиль
+{% endblock %}
+
+{% block content %}
+    <table>
+            <tr align="top">
+                <td><img src="https://www.gravatar.com/avatar/{{ avatar }}?d=identicon&s=128"></td>
+                <td>
+                    <h1>{{ user.first_name }} {{ user.last_name }} </h1>
+                    <p>Ник: {{ user.username }}</p>
+                    {% if user.info_set.first.about %}
+                    <p>{{user.info_set.first.about}}</p>
+                    {% endif %}
+                    {% if request.user == user %}<a href="{% url 'profile:edit_profile' %}">Изменить профиль</a>{% endif %}
+                </td>
+            </tr>
+    </table>
+{% endblock %}

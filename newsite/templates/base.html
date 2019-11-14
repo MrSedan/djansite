@@ -13,12 +13,9 @@
             <ul class="navbar-nav mr-auto">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Профиль</a>
+                    <a class="nav-link" href="{% url 'profile:profile' request.user.info_set.first.url %}">{{ request.user.username }}</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Статьи</a>
-                </li>
                 <li>
                     {% if request.user.is_anonymous %}
                         <a class="nav-link" href="{% url 'profile:login' %}">Войти</a>
@@ -27,10 +24,6 @@
                     {% endif %}
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="search" placeholder="Запрос" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
-            </form>
         </div>
         <table>
             <td>
