@@ -98,7 +98,7 @@ def edit_profile(request):
             return render(request, '404.html')
         urls = Info.objects.filter(url=url)
         if urls is not None:
-            if urls.first().user!=request.user:
+            if urls.first().user != request.user:
                 messages.error(request, "Такая ссылка уже зарезервирована!")
                 return render(request, 'profiles/edit_profile.html', {'info':info})   
         info.url = url
@@ -106,6 +106,7 @@ def edit_profile(request):
         info.save()
         messages.success(request, "Успешное изменение!")
         return redirect('profile:profile', url)
+            
     if request.user.is_authenticated:
             try:
                 info = Info.objects.get(user=request.user)
