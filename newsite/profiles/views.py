@@ -45,23 +45,23 @@ def register(request):
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             second_name = form.cleaned_data['second_name']
+            email = form.cleaned_data['email']
             try:
-                User.objects.get(username=form.cleaned_data['login'])
+                User.objects.get(username=form.cleaned_data['login'].lower())
                 messages.error(request, "Такой ник уже зарегистрирован!")
                 form = RegisterForm()
                 return redirect('profile:register', kwargs={'form': form})
             except:
                 pass
-
+            
             try:
-                User.objects.get(email=form.cleaned_data['email'])
+                User.objects.get(email=email.lower())
                 messages.error(request, "Эта почта уже зарегистрирована!")
                 form = RegisterForm()
                 return redirect('profile:register', kwargs={'form': form})
             except:
                 pass
-            email = form.cleaned_data['email']
-            if form.cleaned_data['password'] != form.cleaned_data['re_password']:
+            if request.POST['password'] != request.POST['re_password']:
                 messages.error(request, "Пароли не совпадают!")
                 form = RegisterForm()
                 return redirect('profile:register', kwargs={'form': form})
@@ -69,9 +69,9 @@ def register(request):
                 user = User(first_name=first_name, email=email, username=request.POST['login'])
                 if second_name is not None:
                     user.last_name = second_name
-                user.set_password(form.cleaned_data['password'])
+                user.set_password(request.POST['password'])
                 user.save()
-                info = Info(user=user, url=form.cleaned_data['login'])
+                info = Info(user=user, url=request.POST['login'].lower())
                 info.save()
                 messages.success(request, "Вы успешно зарегистрировались!")
                 form = LoginForm()
@@ -81,7 +81,7 @@ def register(request):
     
 def profile(request, s):
     try:
-        info = Info.objects.get(url=s)
+        info = Info.objects.get(url=s.lower())
         user = info.user
     except:
         return render(request, '404.html', {'text': "Этого пользователя не существует!"})
@@ -96,7 +96,7 @@ def edit_profile(request):
             info = Info.objects.get(user=request.user)
         except:
             return render(request, '404.html')
-        urls = Info.objects.filter(url=url).first()
+        urls = Info.objects.filter(url=url.lower()).first()
         if urls is not None:
             if urls.user != request.user:
                 messages.error(request, "Такая ссылка уже зарезервирована!")
