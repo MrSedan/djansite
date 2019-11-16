@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL = '/profiles/login'
+
 SESSION_COOKIE_AGE = 60*60*24*365
 SESSION_SAVE_EVERY_REQUEST = True
 
