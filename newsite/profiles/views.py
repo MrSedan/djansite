@@ -22,6 +22,8 @@ def log_in(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    if not form.cleaned_data['remember']:
+                        request.session.set_expiry(0)
                     messages.success(request, "Успешный вход!")
                     return redirect('profile:index')
             else:
@@ -46,25 +48,24 @@ def register(request):
             first_name = form.cleaned_data['first_name']
             second_name = form.cleaned_data['second_name']
             email = form.cleaned_data['email']
-            try:
-                User.objects.get(username=form.cleaned_data['login'].lower())
-                messages.error(request, "Такой ник уже зарегистрирован!")
-                form = RegisterForm()
-                return redirect('profile:register', kwargs={'form': form})
-            except:
-                pass
             
-            try:
-                User.objects.get(email=email.lower())
+            user = User.objects.filter(username=form.cleaned_data['login'].lower()).first()
+            if user is not None:
+                messages.error(request, "Такой ник уже зарегистрирован!")
+                formn = RegisterForm()
+                return redirect('profile:register')
+        
+            
+            user = User.objects.filter(email=email.lower()).first()
+            if user is not None:
                 messages.error(request, "Эта почта уже зарегистрирована!")
-                form = RegisterForm()
-                return redirect('profile:register', kwargs={'form': form})
-            except:
-                pass
+                formn = RegisterForm()
+                return redirect('profile:register')
+        
             if request.POST['password'] != request.POST['re_password']:
                 messages.error(request, "Пароли не совпадают!")
-                form = RegisterForm()
-                return redirect('profile:register', kwargs={'form': form})
+                formn = RegisterForm()
+                return redirect('profile:register')
             else:
                 user = User(first_name=first_name, email=email, username=request.POST['login'])
                 if second_name is not None:
@@ -84,7 +85,12 @@ def profile(request, s):
         info = Info.objects.get(url=s.lower())
         user = info.user
     except:
-        return render(request, '404.html', {'text': "Этого пользователя не существует!"})
+        try:
+            s = int(s.replace('id',''))
+            info = Info.objects.get(id=s)
+            user = info.user
+        except: 
+            return render(request, '404.html', {'text': "Этого пользователя не существует!"})
     digest = md5(user.email.lower().encode('utf-8')).hexdigest()
     return render(request, 'profiles/profile.html', {'user': user, 'avatar': digest})
 

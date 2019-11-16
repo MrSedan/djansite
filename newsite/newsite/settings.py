@@ -50,6 +50,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_COOKIE_AGE = 60*60*24*365
+SESSION_SAVE_EVERY_REQUEST = True
+
 ROOT_URLCONF = 'newsite.urls'
 
 TEMPLATES = [
