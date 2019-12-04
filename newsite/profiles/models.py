@@ -11,6 +11,7 @@ class Info(models.Model):
     readonly_fields = ['id']
     def __str__(self):
         return f"[id: {self.id}] {self.user.username}"
+    
     class Meta:
         verbose_name = 'Информация'
         verbose_name_plural = 'Информация'

@@ -61,7 +61,9 @@ def register(request):
                 messages.error(request, "Эта почта уже зарегистрирована!")
                 formn = RegisterForm()
                 return redirect('profile:register')
-        
+            if len(request.POST['password'])<8:
+                messages.error(request, 'Пароль должен быть 8 и более символов!')
+                return redirect('profile:register')
             if request.POST['password'] != request.POST['re_password']:
                 messages.error(request, "Пароли не совпадают!")
                 formn = RegisterForm()
@@ -119,3 +121,8 @@ def edit_profile(request):
             except:
                 return render(request, '404.html')
             return render(request, 'profiles/edit_profile.html', {'info':info})   
+
+def handler404(request, *args, **argv):
+    response = render(request,'404.html', {'text':'Страница не найдена!'})
+    return response
+

@@ -50,8 +50,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+<<<<<<< HEAD
 LOGIN_URL = '/profiles/login'
 
+=======
+>>>>>>> UPD
 SESSION_COOKIE_AGE = 60*60*24*365
 SESSION_SAVE_EVERY_REQUEST = True
 
@@ -124,3 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
+=======
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+>>>>>>> UPD
