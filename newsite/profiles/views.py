@@ -5,6 +5,7 @@ from django.contrib import messages
 from hashlib import md5
 from django.contrib.auth.models import User
 from .models import Info
+from string import ascii_letters
 
 def index(request):
     return render(request, 'profiles/index.html')
@@ -61,12 +62,14 @@ def register(request):
                 messages.error(request, "Эта почта уже зарегистрирована!")
                 formn = RegisterForm()
                 return redirect('profile:register')
+            if not all(map(lambda c: c in (ascii_letters+'0123456789') ,form.cleaned_data['login'])):
+                messages.error(request, 'Логин может содержать только: латинские буквы, цыфры!')
+                return redirect('profile:register')
             if len(request.POST['password'])<8:
                 messages.error(request, 'Пароль должен быть 8 и более символов!')
                 return redirect('profile:register')
             if request.POST['password'] != request.POST['re_password']:
                 messages.error(request, "Пароли не совпадают!")
-                formn = RegisterForm()
                 return redirect('profile:register')
             else:
                 user = User(first_name=first_name, email=email, username=request.POST['login'])
