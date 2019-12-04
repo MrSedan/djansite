@@ -61,13 +61,9 @@ def register(request):
                 messages.error(request, "Эта почта уже зарегистрирована!")
                 formn = RegisterForm()
                 return redirect('profile:register')
-<<<<<<< HEAD
-        
-=======
             if len(request.POST['password'])<8:
                 messages.error(request, 'Пароль должен быть 8 и более символов!')
                 return redirect('profile:register')
->>>>>>> UPD
             if request.POST['password'] != request.POST['re_password']:
                 messages.error(request, "Пароли не совпадают!")
                 formn = RegisterForm()
