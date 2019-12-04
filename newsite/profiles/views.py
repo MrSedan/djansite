@@ -63,7 +63,7 @@ def register(request):
                 formn = RegisterForm()
                 return redirect('profile:register')
             if not all(map(lambda c: c in (ascii_letters+'0123456789') ,form.cleaned_data['login'])):
-                messages.error(request, 'Логин может содержать только: латинские буквы, цыфры!')
+                messages.error(request, 'Логин может содержать только: латинские буквы, цифры!')
                 return redirect('profile:register')
             if len(request.POST['password'])<8:
                 messages.error(request, 'Пароль должен быть 8 и более символов!')
@@ -111,7 +111,10 @@ def edit_profile(request):
         if urls is not None:
             if urls.user != request.user:
                 messages.error(request, "Такая ссылка уже зарезервирована!")
-                return render(request, 'profiles/edit_profile.html', {'info':info})   
+                return render(request, 'profiles/edit_profile.html', {'info':info})
+        if not all(map(lambda c: c in (ascii_letters+'012345678'), url)):
+            messages.error(request, 'Ссылка может содержать только латинские буквы и цифры!')
+            return redirect('profile:edit_profile')
         info.url = url
         info.about = about
         info.save()
