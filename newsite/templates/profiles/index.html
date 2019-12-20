@@ -5,5 +5,17 @@
 {% endblock %}
 
 {% block content %}
+    
     <h1 style="text-align:center;">Hello, world!</h1>
+    <hr>
+    {% if posts %}
+    <div style="margin-left:20px auto auto;margin-right:20px auto">
+        {% for i in posts %}
+            <p style="font-size:x-large;font-weight:bold;">{{ i.name }}</p>
+            <p style="font-size:large;">{{ i.text }}</p>
+            <a href="{% url 'profile:profile' i.author.info_set.first.url %}">{{ i.author.username }}</a>
+            <hr>
+        {% endfor %}
+    </div>
+    {% endif %}
 {% endblock %}

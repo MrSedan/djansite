@@ -14,3 +14,6 @@ class RegisterForm(forms.Form):
     password = forms.CharField(label='Password', max_length=48, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}))
     re_password = forms.CharField(label='Repeat password', max_length=48, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Повторите пароль'}))
     
+class PostForm(forms.Form):
+    name = forms.CharField(label="Name", max_length=48, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Имя статьи'}))
+    text = forms.CharField(label="Text", max_length=16192, required=True, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Текст статьи'}))

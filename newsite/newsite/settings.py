@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x7zat%b7-kpm#!)!pg@c+vqc&^#ht)%ryqmc969&#&b080n*v4'
+SECRET_KEY = 'v&kfl6=la5cyuwrvrammpcg+pvxz!*8x#b44d6m+_8981-ow_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,8 +49,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-LOGIN_URL = '/profiles/login'
 
 SESSION_COOKIE_AGE = 60*60*24*365
 SESSION_SAVE_EVERY_REQUEST = True

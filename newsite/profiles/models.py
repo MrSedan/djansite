@@ -16,3 +16,16 @@ class Info(models.Model):
         verbose_name = 'Информация'
         verbose_name_plural = 'Информация'
     
+
+class Post(models.Model):
+    pub_date = models.DateTimeField(name="date")
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(name="name", max_length=48)
+    text = models.TextField(name="text", max_length=16192)
+    
+    def __str__(self):
+        return f"[Name: {self.name}] {self.author.username}"
+    
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'

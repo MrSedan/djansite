@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, PostForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from hashlib import md5
 from django.contrib.auth.models import User
-from .models import Info
+from .models import Info, Post
 from string import ascii_letters
+import datetime
 
 def index(request):
-    return render(request, 'profiles/index.html')
+    posts = Post.objects.all().order_by('-date')
+    return render(request, 'profiles/index.html', {'posts':posts})
 
 def log_in(request):
     if request.user.is_authenticated:
@@ -80,12 +82,19 @@ def register(request):
                 info = Info(user=user, url=request.POST['login'].lower())
                 info.save()
                 messages.success(request, "Вы успешно зарегистрировались!")
-                form = LoginForm()
                 return redirect('profile:login')
     form = RegisterForm()
     return render(request, 'profiles/register.html', {'form': form})
     
 def profile(request, s):
+    if request.method=='POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            text = form.cleaned_data['text']
+            post = Post(author=request.user, name=name, text=text, date=datetime.datetime.now())
+            post.save()
+            messages.success(request, 'Статья успешно создана!')
     try:
         info = Info.objects.get(url=s.lower())
         user = info.user
@@ -96,8 +105,10 @@ def profile(request, s):
             user = info.user
         except: 
             return render(request, '404.html', {'text': "Этого пользователя не существует!"})
+    form = PostForm()
+    posts = Post.objects.filter(author=user).order_by('-date')
     digest = md5(user.email.lower().encode('utf-8')).hexdigest()
-    return render(request, 'profiles/profile.html', {'user': user, 'avatar': digest})
+    return render(request, 'profiles/profile.html', {'user': user, 'avatar': digest, 'form':form, 'posts':posts})
 
 def edit_profile(request):
     if request.method=='POST':
